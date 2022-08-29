@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div {background-color: #152238;height:80px;width;100%;display:flex;align-items:center;justify-content:space-between;padding :0 5px;}
+div a {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  padding: 15px;
+  display:inline-block;
+}
+ul {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+ul li {display: inline-block;}
+ul li:hover {background: green;}
+ul li:hover ul {display: block;}
+ul li ul {
+  position: absolute;
+  width: 200px;
+  display: none;
+}
+ul li ul li {
+  background: #555;
+  display: block;
+}
+ul li ul li a {display:block !important;}
+ul li ul li:hover {background: green;}
+body{
+background-image:url("{% static 'img/bg.png' %}");"
+}
+</style>
+    <title>FBI banking</title>
+</head>
+<body>
+{% csrf_token %}
+<div>
+    {% csrf_token %}
+
+     <img style="background-color: #152238;height:80px;width:10%;
+align-items:center;justify-content:space-between ;"
+      src="{% static 'img/logo.png' %}"><h1 style="text-align:center;color:white;">FBI</h1>  <a href="/">Home</a>
+     {% if user.is_authenticated %}
+        {% csrf_token %}
+
+    <li style="float:right;color:white;">WELCOME : <h3>{{user.username}}</h3></li>
+
+
+  <ul>
+    <li>
+      <a href="#">Branches</a>
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Palakkad">PALAKKAD</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/kollam">KOLLAM</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/malappuram">MALAPPURAM</a></li>
+                  <li><a href="https://en.wikipedia.org/wiki/kannur">KANNUR</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/trissur">TRISSUR</a></li>
+
+      </ul>
+    </li>
+  </ul>
+
+
+     <li><a href="{% url 'logout' %}">Logout</a></li>
+     <li><button class="btn btn-danger" type="button"><a style="padding:20px;marging:5px;background-color:green;color:white;" href="{% url 'person' %}">ADD DATA</a></button></li>
+
+
+
+    {% else %}
+     <a href="{% url 'register' %}">Register</a>
+    <a href="{% url 'login' %}">login</a>
+    {% endif %}
+</div>
+</body>
+</html>

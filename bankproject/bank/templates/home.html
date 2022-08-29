@@ -1,0 +1,128 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>PERSON FORM</title>
+<style>
+ul {
+  list-style-type: none;
+  margin: 2;
+  padding: 9px;
+  overflow: hidden;
+  background-color: #152238;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+body{
+background-image:url("{% static 'img/img.png' %}");"
+}
+</style>
+</head>
+<body style="background-color:black;color:white;">
+<ul>
+  <li style="color:black;font-size:20px;"><a style="color:white;" href="/">Home</a></li>
+
+  {% if user.is_authenticated %}
+    <li style="float:right;color:white;">WELCOME:<h2>{{user.username}}</h2></li>
+    <li style="float:right;font-size:20px;color:black;"><a style="color:white;" href="{% url 'logout' %}">logout</a></li>
+
+    {% else %}
+    <li><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'register' %}">Register</a></li>
+    {% endif %}
+</ul>
+<h2>ACCOUNT HOLDER INFORMATION</h2>
+{% for sms in messages %}
+{{sms}}
+{% endfor %}
+    <form  action="{% url 'person' %}" method="post" id="personForm" data-cities-url="{% url 'ajax_load_cities' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+       <input type="submit" value="Submit">    <button style="float:right;" type="button" class="btn btn-success" ><a style="background-color:red;color:black;padding:10px;margin:2px;" href="{% url 'page' %}">HOME</a></button>
+
+
+
+    </form>
+
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_country").change(function () {
+        const url = $("#personForm").attr("data-cities-url");  // get the url of the `load_cities` view
+        const countryId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'country_id': countryId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (city) {
+                    html_data += `<option value="${city.id}">${city.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_city").html(html_data);
+
+                */
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>
